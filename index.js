@@ -1,7 +1,6 @@
 const express = require('express'); // import de express
 const app = express(); // instanciation de express
 //const equipes = require('./equipes.json');
-
 /**
  * Importation du client MongoClient & connexion à la DB
  */
@@ -20,6 +19,65 @@ app.use(express.json());
 app.listen(83,()=>{
     console.log("BACK EXPRESS JS")
 });
+
+
+app.get('/equipes', (req,res) => {
+     db.collection('equipe').find({}).toArray(function(err, docs) {
+         if (err) {
+             console.log(err)
+             throw err
+         }
+         res.status(200).json(docs)
+       }) 
+   })
+
+   app.get('/equipes/:id', async (req,res) => {
+        const id = parseInt(req.params.id)
+        try {
+            const docs = await db.collection('equipe').find({id}).toArray()
+            res.status(200).json(docs)
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+      })
+      
+
+      app.post('/equipes', async (req,res) => {
+           try {
+               const equipeData = req.body
+               const equipe = await db.collection('equipe').insertOne(equipeData)
+               res.status(200).json(equipe)
+           } catch (err) {
+               console.log(err)
+               throw err
+           }
+         })
+         
+   
+         app.put('/equipes/:id', async (req,res) => {
+              try {
+                  const id = parseInt(req.params.id)
+                  const replacementEquipe = req.body
+                  const equipe = await db.collection('equipe').replaceOne({id},replacementEquipe)
+                  res.status(200).json(equipe)
+              } catch (err) {
+                  console.log(err)
+                  throw err
+              }
+            })
+
+            app.delete('/equipes/:id', async (req,res) => {
+                 try {
+                     const id = parseInt(req.params.id)
+                     const equipe = await db.collection('equipe').deleteOne({id})
+                     res.status(200).json(equipe)
+                 } catch (err) {
+                     console.log(err)
+                     throw err
+                 } 
+               })
+               
 /*
 app.get('/equipes',(req,res)=>{
    // res.send("<h1 align=center>Hello Backend Express JS</h1>");
