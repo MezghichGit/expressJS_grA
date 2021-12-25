@@ -1,12 +1,14 @@
 const express = require('express'); // import de express
 const app = express(); // instanciation de express
+var cors = require('cors');
+app.use(cors());
 //const equipes = require('./equipes.json');
 /**
  * Importation du client MongoClient & connexion à la DB
  */
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
-const dbName = 'sesame4A';
+let dbName = 'sesame4A';
 let db ;
 MongoClient.connect(url, function(err, client) {
  console.log("Connexion réussi avec Mongo");
