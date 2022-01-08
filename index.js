@@ -2,6 +2,7 @@ const express = require('express'); // import de express
 const app = express(); // instanciation de express
 var cors = require('cors');
 app.use(cors());
+// back
 //const equipes = require('./equipes.json');
 /**
  * Importation du client MongoClient & connexion à la DB
